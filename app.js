@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { MONGO_URL } = require('./config');
 
 const app = express();
@@ -14,8 +15,10 @@ mongoose.connect(MONGO_URL, {
   useUnifiedTopology: true,
 });
 
+app.use(requestLogger);
 app.use(bodyParser.json());
 app.use(routes);
+app.use(errorLogger);
 
 app.listen(PORT, () => {
   console.log(`App listening ${PORT} port`);
