@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const routes = require('./routes');
 const { MONGO_URL } = require('./config');
 
@@ -13,6 +14,7 @@ mongoose.connect(MONGO_URL, {
   useUnifiedTopology: true,
 });
 
+app.use(bodyParser.json());
 app.use(routes);
 
 app.listen(PORT, () => {
