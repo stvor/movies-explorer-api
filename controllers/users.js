@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/movie');
+const User = require('../models/user');
 const IncorrectDataError = require('../errors/incorrect-data-err');
 const NotFoundError = require('../errors/not-found-err');
 const RegistrationError = require('../errors/registration-err');
