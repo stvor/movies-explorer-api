@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
+const { errors } = require('celebrate');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/error-handler');
@@ -31,7 +32,7 @@ app.use(() => {
   throw new NotFoundError('Ресурс не найден');
 });
 app.use(errorLogger);
-
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
