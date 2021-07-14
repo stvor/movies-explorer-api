@@ -20,6 +20,7 @@ app.use(requestLogger);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(routes);
+app.use((req, res) => res.status(404).send({ message: 'Ресурс не найден' }));
 app.use(errorLogger);
 
 app.use((err, req, res, next) => {
