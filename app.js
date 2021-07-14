@@ -6,6 +6,7 @@ const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/error-handler');
 const { MONGO_URL } = require('./config');
+const NotFoundError = require('./errors/not-found-err');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -22,7 +23,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
-app.use((req, res) => res.status(404).send({ message: 'Ресурс не найден' }));
+app.use(() => {
+  throw new NotFoundError('Ресурс не найден');
+});
 app.use(errorLogger);
 
 app.use(errorHandler);
