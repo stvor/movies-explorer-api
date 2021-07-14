@@ -6,6 +6,7 @@ const cors = require('cors');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/error-handler');
+const limiter = require('./middlewares/limiter');
 const { MONGO_URL } = require('./config');
 const NotFoundError = require('./errors/not-found-err');
 
@@ -20,6 +21,7 @@ mongoose.connect(MONGO_URL, {
 });
 
 app.use(requestLogger);
+app.use(limiter);
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
