@@ -1,5 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 const { ObjectId } = require('mongoose').Types;
+const validator = require('validator');
 
 const validateObjId = celebrate({
   params: Joi.object().keys({
@@ -34,9 +35,41 @@ const validateAuthentication = celebrate({
   }),
 });
 
+const validateMovieBody = celebrate({
+  body: Joi.object().keys({
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
+    image: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Невалидный url изображения');
+    }),
+    trailer: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Невалидный url трейлера');
+    }),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
+    thumbnail: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Невалидный thumbnail url');
+    }),
+    movieId: Joi.number().required(),
+  }),
+});
+
 module.exports = {
   validateObjId,
   validateUserBody,
   validateProfileBody,
   validateAuthentication,
+  validateMovieBody,
 };
