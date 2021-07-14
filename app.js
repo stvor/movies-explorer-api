@@ -19,6 +19,7 @@ mongoose.connect(MONGO_URL, {
 app.use(requestLogger);
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
 app.use((req, res) => res.status(404).send({ message: 'Ресурс не найден' }));
 app.use(errorLogger);
