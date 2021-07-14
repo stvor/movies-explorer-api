@@ -1,4 +1,16 @@
 const { celebrate, Joi } = require('celebrate');
+const { ObjectId } = require('mongoose').Types;
+
+const validateObjId = celebrate({
+  params: Joi.object().keys({
+    _id: Joi.string().required().custom((value, helpers) => {
+      if (ObjectId.isValid(value)) {
+        return value;
+      }
+      return helpers.message('Невалидный id');
+    }),
+  }),
+});
 
 const validateUserBody = celebrate({
   body: Joi.object().keys({
@@ -23,6 +35,7 @@ const validateAuthentication = celebrate({
 });
 
 module.exports = {
+  validateObjId,
   validateUserBody,
   validateProfileBody,
   validateAuthentication,
