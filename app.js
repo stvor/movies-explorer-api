@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const errorHandler = require('./middlewares/error-handler');
 const { MONGO_URL } = require('./config');
 
 const app = express();
@@ -24,17 +25,7 @@ app.use(routes);
 app.use((req, res) => res.status(404).send({ message: 'Ресурс не найден' }));
 app.use(errorLogger);
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'На сервере произошла ошибка'
-      : message,
-  });
-
-  next();
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening ${PORT} port`);
