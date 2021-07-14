@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { MONGO_URL } = require('./config');
@@ -16,6 +17,7 @@ mongoose.connect(MONGO_URL, {
 });
 
 app.use(requestLogger);
+app.use(cors());
 app.use(bodyParser.json());
 app.use(routes);
 app.use(errorLogger);
