@@ -1,8 +1,8 @@
-class RegistrationError extends Error {
+class ConflictError extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 409;
   }
 }
 
-module.exports = RegistrationError;
+module.exports = ConflictError;
