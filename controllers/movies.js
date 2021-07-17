@@ -5,7 +5,7 @@ const NotFoundError = require('../errors/not-found-err');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
-    .then((movies) => res.status(200).send(movies))
+    .then((movies) => res.send(movies))
     .catch(next);
 };
 
@@ -39,7 +39,7 @@ module.exports.addMovie = (req, res, next) => {
     movieId,
     owner,
   })
-    .then((movie) => res.status(200).send(movie))
+    .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new IncorrectDataError('Переданы некорректные данные при добавлении фильма'));
@@ -55,7 +55,7 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (req.user._id.toString() === movie.owner.toString()) {
         return Movie.findByIdAndRemove(req.params._id)
-          .then(() => res.status(200).send(movie));
+          .then(() => res.send(movie));
       }
       return next(new NoRightsError('Нельзя удалять чужие фильмы'));
     })

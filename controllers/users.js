@@ -12,7 +12,7 @@ module.exports.createUser = (req, res, next) => {
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({ email, name, password: hash }))
-    .then(() => res.status(200).send({ email, name }))
+    .then(() => res.send({ email, name }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new IncorrectDataError('Переданы некорректные данные при создании пользователя'));
@@ -31,7 +31,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
 
-      res.status(200).send(token);
+      res.send(token);
     })
     .catch(next);
 };
@@ -47,7 +47,7 @@ module.exports.updateProfile = (req, res, next) => {
 
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail(new NotFoundError('Пользователь с таким _id не найден'))
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         next(new IncorrectDataError('Переданы некорректные данные при обновлении профиля'));
