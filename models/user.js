@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(value) {
-        return validator.isEmail(value);
+        return validator.matches(value, /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/);
       },
       message: 'Введите корректный email',
     },

@@ -16,7 +16,12 @@ const validateObjId = celebrate({
 const validateUserBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().required().email(),
+    email: Joi.string().required().custom((value, helpers) => {
+      if (validator.matches(value, /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/)) {
+        return value;
+      }
+      return helpers.message('Невалидный email');
+    }),
     password: Joi.string().required(),
   }),
 });
@@ -24,13 +29,23 @@ const validateUserBody = celebrate({
 const validateProfileBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().required().email(),
+    email: Joi.string().required().custom((value, helpers) => {
+      if (validator.matches(value, /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/)) {
+        return value;
+      }
+      return helpers.message('Невалидный email');
+    }),
   }),
 });
 
 const validateAuthentication = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().required().custom((value, helpers) => {
+      if (validator.matches(value, /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/)) {
+        return value;
+      }
+      return helpers.message('Невалидный email');
+    }),
     password: Joi.string().required(),
   }),
 });
